@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Momasos Fede</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px;
+      resize: none;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    #comentarios {
+      margin-top: 30px;
+    }
+
+    .comentario {
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+    }
+
+    .comentario img {
+      max-width: 100%;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Momasos Fede</h1>
+  <p>¡Escribí un comentario y subí un meme para compartirlo con todos!</p>
+
+  <textarea id="comentarioTexto" placeholder="Escribí tu comentario..."></textarea><br>
+  <input type="file" id="imagenInput" accept="image/*"><br>
+  <button onclick="publicarComentario()">Publicar</button>
+
+  <div id="comentarios">
+    <h2>Comentarios publicados</h2>
+  </div>
+
+  <script>
+    function publicarComentario() {
+      const texto = document.getElementById("comentarioTexto").value.trim();
+      const imagenInput = document.getElementById("imagenInput");
+      const imagenArchivo = imagenInput.files[0];
+
+      if (texto === "" && !imagenArchivo) {
+        alert("Por favor escribí un comentario o seleccioná una imagen.");
+        return;
+      }
+
+      const comentarioDiv = document.createElement("div");
+      comentarioDiv.className = "comentario";
+
+      if (texto !== "") {
+        const textoParrafo = document.createElement("p");
+        textoParrafo.textContent = texto;
+        comentarioDiv.appendChild(textoParrafo);
+      }
+
+      if (imagenArchivo) {
+        const lector = new FileReader();
+        lector.onload = function(e) {
+          const imagen = document.createElement("img");
+          imagen.src = e.target.result;
+          comentarioDiv.appendChild(imagen);
+        };
+        lector.readAsDataURL(imagenArchivo);
+      }
+
+      document.getElementById("comentarios").appendChild(comentarioDiv);
+
+      // Limpiar campos
+      document.getElementById("comentarioTexto").value = "";
+      imagenInput.value = "";
+    }
+  </script>
+
+</body>
+</html>
